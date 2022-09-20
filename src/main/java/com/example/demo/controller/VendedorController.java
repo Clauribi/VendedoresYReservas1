@@ -17,5 +17,4 @@ public class VendedorController {
     public void bajaVendedores(@PathVariable String dni){
         System.out.println("El vendedor se ha dado de baja");
     }
-
 }
