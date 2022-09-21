@@ -3,7 +3,6 @@ package com.example.demo.controller;
 public class VendedorUpdate {
     private String nombre;
     private String direccion;
-    private String dni;
     private int telefono;
 
     public VendedorUpdate(String nombre, String direccion, int telefono) {
@@ -29,14 +28,6 @@ public class VendedorUpdate {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
-    }
-
-    public String getDni() {
-        return dni;
-    }
-
-    public void setDni(String dni) {
-        this.dni = dni;
     }
 
     public int getTelefono() {
