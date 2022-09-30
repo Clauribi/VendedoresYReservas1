@@ -4,8 +4,6 @@ import com.example.demo.domain.Vendedor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 
 public class VendedorUpdate {
     @NotNull(message = "Nombre is null")
@@ -53,6 +51,11 @@ public class VendedorUpdate {
     }
 
     public Vendedor createDomainObject(String dni) {
-        return new Vendedor(this.nombre, this.direccion, dni, this.telefono);
+        return new Vendedor(dni, this.nombre, this.direccion, this.telefono);
+    }
+    public void updateInfo(){
+        setNombre(nombre);
+        setDireccion(direccion);
+        setTelefono(telefono);
     }
 }

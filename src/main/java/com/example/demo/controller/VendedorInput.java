@@ -4,10 +4,10 @@ import com.example.demo.domain.Vendedor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 
 public class VendedorInput extends VendedorUpdate {
+    @NotNull(message = "dni is null")
+    @NotBlank(message = "dni is empty")
     private String dni;
 
     public VendedorInput(String nombre, String direccion, String dni, String telefono) {
@@ -15,8 +15,15 @@ public class VendedorInput extends VendedorUpdate {
         this.dni = dni;
 
     }
-
     public VendedorInput() {
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
     public Vendedor createDomainObject() {

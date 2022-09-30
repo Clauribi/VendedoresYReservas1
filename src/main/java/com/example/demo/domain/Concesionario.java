@@ -1,12 +1,14 @@
 package com.example.demo.domain;
 
+import com.example.demo.controller.VendedorUpdate;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class Concesionario {
     private HashMap<String, Reserva> listadoReservas = new HashMap<>();
-    private HashMap<String, Vendedor> listadoVendedores = new HashMap<>();
+    private static HashMap<String, Vendedor> listadoVendedores = new HashMap<>();
 
     public Concesionario(HashMap<String, Reserva> listadoReservas, HashMap<String, Vendedor> listadoVendedores) {
         this.listadoReservas = listadoReservas;
@@ -37,31 +39,32 @@ public class Concesionario {
 
     }
 //VENDEDORESSS
-    public void addVendedor(Vendedor vendedor) throws ExisteExcepcion {
+    public static void addVendedor(Vendedor vendedor) throws ExisteExcepcion {
         if (listadoVendedores.get(vendedor.getDni()) != null) {
             throw new ExisteExcepcion("el vendedor.");
         } else {
-            this.listadoVendedores.put(vendedor.getDni(), vendedor);
+            listadoVendedores.put(vendedor.getDni(), vendedor);
         }
     }
 
-    public void deleteVendedor(String dni) throws NoExisteExcepcion {
+    public static void deleteVendedor(String dni) throws NoExisteExcepcion {
         if (!listadoVendedores.containsKey(dni)) {
             throw new NoExisteExcepcion("el vendedor con dni: " + dni);
         } else {
-            this.listadoVendedores.remove(dni);
+            listadoVendedores.remove(dni);
         }
     }
 
-    public void updateVendedor(Vendedor vendedor) throws NoExisteExcepcion {
-        if (!listadoVendedores.containsKey(vendedor.getDni())) {
+    public static void updateVendedor(Vendedor vendedor) throws NoExisteExcepcion {
+        if (listadoVendedores.get(vendedor.getDni()) == null) {
             throw new NoExisteExcepcion("el vendedor.");
         } else {
-            this.listadoVendedores.put(vendedor.getDni(), vendedor);
+            listadoVendedores.replace(vendedor.getDni(), vendedor);
         }
+
     }
 
-    public List<Vendedor> getAllVendedores() {
+    public static List<Vendedor> getAllVendedores() {
         return new ArrayList<>(listadoVendedores.values());
     }
 }

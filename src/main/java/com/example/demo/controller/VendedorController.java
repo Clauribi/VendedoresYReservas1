@@ -13,34 +13,39 @@ import java.util.List;
 
 @RestController
 public class VendedorController {
-    private Concesionario concesionario = new Concesionario();
+
 
     @PostMapping("/vendedores")
     public ResponseEntity<String> altaVendedores(@Valid @RequestBody VendedorInput vendedorInput) {
         try {
-            concesionario.addVendedor(vendedorInput.createDomainObject());
+            Concesionario.addVendedor(vendedorInput.createDomainObject());
         } catch (ExisteExcepcion e) {
             e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).build();
+        } catch (Exception e1){
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/vendedores/{dni}")
-    public void bajaVendedores(@PathVariable String dni) {
+    public ResponseEntity<String> bajaVendedores(@PathVariable String dni) {
         try {
-            concesionario.deleteVendedor(dni);
-
+            Concesionario.deleteVendedor(dni);
         } catch (NoExisteExcepcion e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).build();
+        } catch (Exception e1) {
+            return ResponseEntity.badRequest().build();
         }
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
     @PutMapping("/vendedores/{dni}")
     public void modificarVendedores(@PathVariable String dni, @Valid @RequestBody VendedorUpdate vendedorUpdate) {
         try {
-            Vendedor vendedor = vendedorUpdate.createDomainObject(dni);
-            concesionario.updateVendedor(vendedor);
+             Vendedor vendedor = new Vendedor(vendedorUpdate.getNombre(), vendedorUpdate.getDireccion(), dni, vendedorUpdate.getTelefono());
+            Concesionario.updateVendedor(vendedor);
         } catch (NoExisteExcepcion e) {
             System.out.println(e.getMessage());
         }
@@ -48,6 +53,6 @@ public class VendedorController {
 
     @GetMapping("/vendedores")
     public ResponseEntity<List<Vendedor>> getVendedores() {
-        return ResponseEntity.ok(concesionario.getAllVendedores());
+        return ResponseEntity.ok(Concesionario.getAllVendedores());
     }
 }
