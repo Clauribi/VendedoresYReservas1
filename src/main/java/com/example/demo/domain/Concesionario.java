@@ -57,10 +57,12 @@ public class Concesionario {
         }
     }
 
-    public static void updateVendedor(String dni, Vendedor vendedor) {
-
+    public static void updateVendedor(String dni, Vendedor vendedor) throws NoExisteExcepcion {
+        if (!listadoVendedores.containsKey(dni)) {
+            throw new NoExisteExcepcion("el vendedor con dni: " + dni);
+        } else {
             listadoVendedores.put(dni, vendedor);
-
+        }
     }
 
     public static List<Vendedor> getAllVendedores() throws NoExisteExcepcion {

@@ -46,6 +46,9 @@ public class VendedorController {
     public ResponseEntity<String> modificarVendedores(@PathVariable String dni, @Valid @RequestBody VendedorUpdate vendedorUpdate) {
         try {
             Concesionario.updateVendedor(dni, vendedorUpdate.createDomainObject(dni));
+        } catch (NoExisteExcepcion e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).build();
         } catch (Exception e1) {
             return ResponseEntity.badRequest().build();
         }
@@ -66,4 +69,15 @@ public class VendedorController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/vendedoresTotal")
+    public ResponseEntity<List<Vendedor>> getVendedoresTotal() {
+        try {
+            return ResponseEntity.ok(Concesionario.getAllVendedores());
+        } catch (NoExisteExcepcion e) {
+            e.printStackTrace();
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
