@@ -24,23 +24,22 @@ public class ReservaController {
         }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-    @PostMapping("/reservas/coches/{matricula}/clientes/{dni}")
-        public String reservasByMatriculaByDni(@PathVariable String matricula, @PathVariable String dni) {
-            try {
-                ArrayList<Reserva> listaReservas = new ArrayList<>();
-                for (Reserva reserva : concesionario.getListadoReservas().values()) {
-                if(reserva.getDni()== dni&&reserva.getMatricula()== matricula){
-                    listaReservas.add(reserva);
-                }
-                } return listaReservas.toString();
 
-            } catch (Exception e) {
-                e.getMessage();
-            } return null;
+    @GetMapping("/reservas/coche/{matricula}/cliente/{dni}")
+    public String reservasByMatriculaByDni(@PathVariable String matricula, @PathVariable String dni) {
 
+        ArrayList<Reserva> listaReservas = new ArrayList<>();
+        for (Reserva reserva : concesionario.getListadoReservas().values()) {
+            if (matricula == reserva.getMatricula() && dni == reserva.getDni()) {
+                listaReservas.add(reserva);
+            }
         }
-    @DeleteMapping("/reservas/coches/{matricula}")
-        public void cancelarReservaCoches(@PathVariable String matricula) {
+        return listaReservas.toString();
+
+    }
+
+    @DeleteMapping("/reservas/coche/{matricula}/cliente/{dni}")
+    public void cancelarReservaCoches(@PathVariable String matricula) {
     }
 }
 
