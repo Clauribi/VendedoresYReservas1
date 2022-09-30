@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,7 +23,7 @@ public class VendedorController {
         } catch (ExisteExcepcion e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).build();
-        } catch (Exception e1){
+        } catch (Exception e1) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -42,17 +43,31 @@ public class VendedorController {
     }
 
     @PutMapping("/vendedores/{dni}")
-    public void modificarVendedores(@PathVariable String dni, @Valid @RequestBody VendedorUpdate vendedorUpdate) {
+    public ResponseEntity<String> modificarVendedores(@PathVariable String dni, @Valid @RequestBody VendedorUpdate vendedorUpdate) {
         try {
-             Vendedor vendedor = new Vendedor(vendedorUpdate.getNombre(), vendedorUpdate.getDireccion(), dni, vendedorUpdate.getTelefono());
+            Vendedor vendedor = vendedorUpdate.createDomainObject(dni);
             Concesionario.updateVendedor(vendedor);
         } catch (NoExisteExcepcion e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).build();
+        } catch (Exception e1) {
+            return ResponseEntity.badRequest().build();
         }
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
     @GetMapping("/vendedores")
-    public ResponseEntity<List<Vendedor>> getVendedores() {
-        return ResponseEntity.ok(Concesionario.getAllVendedores());
+    public ResponseEntity<List<VendedorOutput>> getVendedores() {
+        try {
+            List<Vendedor> vendedores = Concesionario.getAllVendedores();
+            List<VendedorOutput> vendedoresOut = new ArrayList<>();
+            for (Vendedor vendedor : vendedores) {
+                vendedoresOut.add(new VendedorOutput(vendedor.getNombre(), vendedor.getDni(), vendedor.getTelefono()));
+            }
+            return ResponseEntity.ok(vendedoresOut);
+        } catch (NoExisteExcepcion e) {
+            e.printStackTrace();
+            return ResponseEntity.notFound().build();
+        }
     }
 }

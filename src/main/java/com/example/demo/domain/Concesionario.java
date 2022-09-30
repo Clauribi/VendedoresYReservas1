@@ -64,7 +64,10 @@ public class Concesionario {
 
     }
 
-    public static List<Vendedor> getAllVendedores() {
+    public static List<Vendedor> getAllVendedores() throws NoExisteExcepcion {
+        if(listadoVendedores.isEmpty()){
+            throw new NoExisteExcepcion("listado de vendedores está vacía.");
+        }
         return new ArrayList<>(listadoVendedores.values());
     }
 }
