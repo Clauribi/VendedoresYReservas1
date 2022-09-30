@@ -14,6 +14,7 @@ public class Concesionario {
         this.listadoReservas = listadoReservas;
         this.listadoVendedores = listadoVendedores;
     }
+
     public Concesionario() {
     }
 
@@ -38,7 +39,8 @@ public class Concesionario {
         this.listadoReservas.remove(matricula);
 
     }
-//VENDEDORESSS
+
+    //VENDEDORESSS
     public static void addVendedor(Vendedor vendedor) throws ExisteExcepcion {
         if (listadoVendedores.get(vendedor.getDni()) != null) {
             throw new ExisteExcepcion("el vendedor.");
@@ -55,17 +57,14 @@ public class Concesionario {
         }
     }
 
-    public static void updateVendedor(Vendedor vendedor) throws NoExisteExcepcion {
-        if (listadoVendedores.get(vendedor.getDni()) == null) {
-            throw new NoExisteExcepcion("el vendedor.");
-        } else {
-            listadoVendedores.replace(vendedor.getDni(), vendedor);
-        }
+    public static void updateVendedor(String dni, Vendedor vendedor) {
+
+            listadoVendedores.put(dni, vendedor);
 
     }
 
     public static List<Vendedor> getAllVendedores() throws NoExisteExcepcion {
-        if(listadoVendedores.isEmpty()){
+        if (listadoVendedores.isEmpty()) {
             throw new NoExisteExcepcion("listado de vendedores está vacía.");
         }
         return new ArrayList<>(listadoVendedores.values());

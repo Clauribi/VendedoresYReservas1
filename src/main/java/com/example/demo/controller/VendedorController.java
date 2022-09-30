@@ -45,11 +45,7 @@ public class VendedorController {
     @PutMapping("/vendedores/{dni}")
     public ResponseEntity<String> modificarVendedores(@PathVariable String dni, @Valid @RequestBody VendedorUpdate vendedorUpdate) {
         try {
-            Vendedor vendedor = vendedorUpdate.createDomainObject(dni);
-            Concesionario.updateVendedor(vendedor);
-        } catch (NoExisteExcepcion e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).build();
+            Concesionario.updateVendedor(dni, vendedorUpdate.createDomainObject(dni));
         } catch (Exception e1) {
             return ResponseEntity.badRequest().build();
         }

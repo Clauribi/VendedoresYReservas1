@@ -51,11 +51,6 @@ public class VendedorUpdate {
     }
 
     public Vendedor createDomainObject(String dni) {
-        return new Vendedor(dni, this.nombre, this.direccion, this.telefono);
-    }
-    public void updateInfo(){
-        setNombre(nombre);
-        setDireccion(direccion);
-        setTelefono(telefono);
+        return new Vendedor( this.nombre, this.direccion, dni, this.telefono);
     }
 }
