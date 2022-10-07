@@ -1,6 +1,5 @@
 package com.example.demo.domain;
 
-import com.example.demo.controller.VendedorUpdate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
